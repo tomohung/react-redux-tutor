@@ -2,40 +2,65 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 
-const counter = (state = 0, action) => {
+const todos = (state = [], action) => {
   switch (action.type) {
-  case 'INCREMENT':
-    return state + 1;
-  case 'DECREMENT':
-    return state - 1;
+  case 'ADD_TODO':
+    return [
+      ...state,
+      todo(undefined, action)
+    ];
+  case 'TOGGLE_TODO':
+    return state.map(t => todo(t, action));
   default:
     return state;
   }
 };
 
-const store = createStore(counter);
+const todo = (state, action) => {
+  switch (action.type) {
+  case 'ADD_TODO':
+    return {
+      id: action.id,
+      text: action.text,
+      completed: false
+    };
+  case 'TOGGLE_TODO':
+    if (state.id !== action.id) {
+      return state;
+    }
+    return {
+      ...state,
+      completed: !state.completed
+    };
+  default:
+    return state;
+  }
+}
 
-const Counter = ({
-  value,
-  onIncrement,
-  onDecrement
-}) => (
-  <div>
-    <h1>{value}</h1>
-    <button onClick={onIncrement}>+</button>
-    <button onClick={onDecrement}>-</button>
-  </div>
-);
-
-const render = () => {
-  ReactDOM.render(
-      <Counter
-    value={store.getState()}
-    onIncrement={() => store.dispatch({type: 'INCREMENT'})}
-    onDecrement={() => store.dispatch({type: 'DECREMENT'})}
-      />,
-    document.getElementById('root')
-  );
+const visiblityFilter = (state = 'SHOW_ALL', action) => {
+  switch (action.type) {
+  case 'SET_VISIBILITY_FILTER':
+    return action.filter;
+  default:
+    return state;
+  }
 };
-store.subscribe(render);
-render();
+
+// const todoApp = (state = {}, action) => {
+//   return {
+//     todos: todos(state.todos, action),
+//     visiblityFilter: visiblityFilter(
+//       state.visiblityFilter,
+//       action
+//     )
+//   };
+// };
+
+// use combineReducers helper
+const { combineReducers } = Redux;
+const todoApp = combineReducers({
+  todos: todos,
+  visiblityFilter: visiblityFilter
+});
+
+const store = createStore(todoApp);
