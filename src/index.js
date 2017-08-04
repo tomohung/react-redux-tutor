@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 
 const todos = (state = [], action) => {
   switch (action.type) {
@@ -57,10 +57,9 @@ const visiblityFilter = (state = 'SHOW_ALL', action) => {
 // };
 
 // use combineReducers helper
-const { combineReducers } = Redux;
 const todoApp = combineReducers({
-  todos: todos,
-  visiblityFilter: visiblityFilter
+  todos,
+  visiblityFilter
 });
 
 const store = createStore(todoApp);
