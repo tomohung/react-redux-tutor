@@ -1,5 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
 
 const counter = (state = 0, action) => {
   switch (action.type) {
@@ -10,10 +11,8 @@ const counter = (state = 0, action) => {
   default:
     return state;
   }
-}
+};
 
-
-const { createStore } = Redux;
 const store = createStore(counter);
 
 const render = () => {
@@ -23,6 +22,6 @@ const render = () => {
 store.subscribe(render);
 render();
 
-document.addEvenetListener('clici', () => {
+document.addEventListener('click', () => {
   store.dispatch({type: 'INCREMENT'});
 });
