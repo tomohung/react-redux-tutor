@@ -77,55 +77,45 @@ const todoApp = combineReducers({
 
 const store = createStore(todoApp);
 
-const {
-  Component
-} = React;
-
 let nextTodoId = 0;
 
 const TodoApp = ({
   todos,
   visibilityFilter
 }) => {
-  render(
-    const {
-      todos,
-      visibilityFilter
-    } = this.props;
-    const visibleTodos = getVisibleTodos(
-      todos,
-      visibilityFilter
-    );
-    return (
-      <div>
-        <AddTodo
-          onAddClick={text =>
-            store.dispatch({
-              type: 'ADD_TODO',
-              id: nextTodoId++,
-              text
-            })
-          }
-        />
-        <TodoList
-          todos={visibleTodos}
-          onTodoClick={id =>
-            store.dispatch({
-              type: 'TOGGLE_TODO',
-              id
-            })
-          } />
-        <Footer
-          visibilityFilter={visibilityFilter}
-          onFilterClick={filter =>
-            store.dispatch({
-              type: 'SET_VISIBILITY_FILTER',
-              filter
-            })
-          }
-        />
-      </div>
-    )
+  const visibleTodos = getVisibleTodos(
+    todos,
+    visibilityFilter
+  );
+  return (
+    <div>
+      <AddTodo
+        onAddClick={text =>
+          store.dispatch({
+            type: 'ADD_TODO',
+            id: nextTodoId++,
+            text
+          })
+        }
+      />
+      <TodoList
+        todos={visibleTodos}
+        onTodoClick={id =>
+          store.dispatch({
+            type: 'TOGGLE_TODO',
+            id
+          })
+        } />
+      <Footer
+        visibilityFilter={visibilityFilter}
+        onFilterClick={filter =>
+          store.dispatch({
+            type: 'SET_VISIBILITY_FILTER',
+            filter
+          })
+        }
+      />
+    </div>
   )
 }
 
@@ -208,31 +198,31 @@ const Footer = ({
   visibilityFilter,
   onFilterClick
 }) => (
-        <p>
-          <FilterLink
-            filter='SHOW_ALL'
-            currentFilter={visibilityFilter}
-            onClick={onFilterClick}
-          >
-            All
-          </FilterLink>
-          {', '}
-          <FilterLink
-            filter='SHOW_ACTIVE'
-            currentFilter={visibilityFilter}
-            onClick={onFilterClick}
-          >
-            Active
-          </FilterLink>
-          {' '}
-          <FilterLink
-            filter='SHOW_COMPLETED'
-            currentFilter={visibilityFilter}
-            onClick={onFilterClick}
-          >
-            Completed
-          </FilterLink>
-        </p>
+  <p>
+    <FilterLink
+      filter='SHOW_ALL'
+      currentFilter={visibilityFilter}
+      onClick={onFilterClick}
+    >
+      All
+    </FilterLink>
+    {' '}
+    <FilterLink
+      filter='SHOW_ACTIVE'
+      currentFilter={visibilityFilter}
+      onClick={onFilterClick}
+    >
+      Active
+    </FilterLink>
+    {' '}
+    <FilterLink
+      filter='SHOW_COMPLETED'
+      currentFilter={visibilityFilter}
+      onClick={onFilterClick}
+    >
+      Completed
+    </FilterLink>
+  </p>
 )
 
 const render = () => {
