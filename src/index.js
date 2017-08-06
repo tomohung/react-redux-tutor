@@ -80,42 +80,12 @@ const store = createStore(todoApp);
 
 let nextTodoId = 0;
 
-const TodoApp = ({
-  todos,
-  visibilityFilter
-}) => {
-  const visibleTodos = getVisibleTodos(
-    todos,
-    visibilityFilter
-  );
+const TodoApp = () => {
   return (
     <div>
-      <AddTodo
-        onAddClick={text =>
-          store.dispatch({
-            type: 'ADD_TODO',
-            id: nextTodoId++,
-            text
-          })
-        }
-      />
-      <TodoList
-        todos={visibleTodos}
-        onTodoClick={id =>
-          store.dispatch({
-            type: 'TOGGLE_TODO',
-            id
-          })
-        } />
-      <Footer
-        visibilityFilter={visibilityFilter}
-        onFilterClick={filter =>
-          store.dispatch({
-            type: 'SET_VISIBILITY_FILTER',
-            filter
-          })
-        }
-      />
+      <AddTodo />
+      <VisibleTodoList />
+      <Footer />
     </div>
   )
 }
@@ -138,6 +108,39 @@ const Todo = ({
   </li>
 );
 
+class VisibleTodoList extends Component {
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(() =>
+      this.forceUpdate()
+    );
+  }
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  render() {
+    const props = this.props;
+    const state = store.getState();
+
+    return (
+      <TodoList
+        todos={
+          getVisibleTodos(
+            state.todos,
+            state.visibilityFilter
+          )
+        }
+        onTodoClick={id =>
+          store.dispatch({
+            type: 'TOGGLE_TODO',
+            id
+          })
+        }
+      />
+    );
+  }
+}
+
 const TodoList = ({
   todos,
   onTodoClick
@@ -153,9 +156,7 @@ const TodoList = ({
   </ul>
 )
 
-const AddTodo = ({
-  onAddClick
-}) => {
+const AddTodo = () => {
   let input;
 
   return (
@@ -164,7 +165,11 @@ const AddTodo = ({
           input = node;
       }} />
       <button onClick={() => {
-          onAddClick(input.value);
+          store.dispatch({
+            type: 'ADD_TODO',
+            id: nextTodoId++,
+            text: input.value
+          })
           input.value='';
           input.focus();
       }}>
@@ -252,9 +257,7 @@ const Link = ({
 
 const render = () => {
   ReactDOM.render(
-    <TodoApp
-      {...store.getState()}
-    />,
+    <TodoApp />,
     document.getElementById('root')
   );
 };
