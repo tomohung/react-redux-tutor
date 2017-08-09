@@ -195,7 +195,7 @@ class FilterLink extends Component {
     return (
       <Link
       active={
-        props.filter === state.visibi
+        props.filter === state.visibilityFilter
       }
       onClick={() =>
         store.dispatch({
@@ -255,12 +255,7 @@ const Link = ({
   );
 };
 
-const render = () => {
-  ReactDOM.render(
-    <TodoApp />,
-    document.getElementById('root')
-  );
-};
-
-store.subscribe(render);
-render();
+ReactDOM.render(
+  <TodoApp />,
+  document.getElementById('root')
+);
