@@ -173,9 +173,18 @@ const AddTodo = (props, {store}) => {
 
   return (
     <div>
-      <input ref={node => {
-          input = node;
-      }} />
+      <div className="mdl-textfield mdl-js-textfield">
+        <input
+          ref={node => {
+            input = node;
+          }}
+          className="mdl-textfield__input"
+          type="text"
+          id="sample1"
+        />
+        <label className="mdl-textfield__label" for="sample1">Text...</label>
+      </div>
+
       <RaisedButton onClick={() => {
           store.dispatch({
             type: 'ADD_TODO',
