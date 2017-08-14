@@ -7,6 +7,16 @@ import {
 import { Component } from 'react';
 import { Provider } from 'react-redux'
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RaisedButton from 'material-ui/RaisedButton';
+import {List, ListItem} from 'material-ui/List';
+import Checkbox from 'material-ui/Checkbox';
+import ActionFavorite from 'material-ui/svg-icons/action/favorite';
+import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
+import Visibility from 'material-ui/svg-icons/action/visibility';
+import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
+import TextField from 'material-ui/TextField';
+
 const todos = (state = [], action) => {
   switch (action.type) {
     case 'ADD_TODO':
@@ -94,17 +104,19 @@ const Todo = ({
   completed,
   text
 }) => (
-  <li
-    onClick={onClick}
-    style={{
-      textDecoration:
-      completed ?
-      'line-through' :
-      'none'
-    }}
-  >
-    {text}
-  </li>
+  <div>
+    <ListItem
+      onClick={onClick}
+      style={{
+        textDecoration:
+        completed ?
+        'line-through' :
+        'none'
+      }}
+    >
+      {text}
+    </ListItem>
+  </div>
 );
 
 class VisibleTodoList extends Component {
@@ -145,7 +157,7 @@ const TodoList = ({
   todos,
   onTodoClick
 }) => (
-  <ul>
+  <List>
     {todos.map(todo =>
       <Todo
         key={todo.id}
@@ -153,7 +165,7 @@ const TodoList = ({
         onClick={() => onTodoClick(todo.id)}
       />
     )}
-  </ul>
+  </List>
 )
 
 const AddTodo = (props, {store}) => {
@@ -164,7 +176,7 @@ const AddTodo = (props, {store}) => {
       <input ref={node => {
           input = node;
       }} />
-      <button onClick={() => {
+      <RaisedButton onClick={() => {
           store.dispatch({
             type: 'ADD_TODO',
             id: nextTodoId++,
@@ -174,7 +186,7 @@ const AddTodo = (props, {store}) => {
           input.focus();
       }}>
         Add Todo
-      </button>
+      </RaisedButton>
     </div>
   );
 };
@@ -268,8 +280,10 @@ AddTodo.contextTypes = {
 
 
 ReactDOM.render(
-  <Provider store={createStore(todoApp)}>
-    <TodoApp />
-  </Provider>,
+  <MuiThemeProvider>
+    <Provider store={createStore(todoApp)}>
+      <TodoApp />
+    </Provider>
+  </MuiThemeProvider>,
   document.getElementById('root')
 );
